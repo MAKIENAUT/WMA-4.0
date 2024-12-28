@@ -1,11 +1,11 @@
 import { Metadata } from "next";
-import LoginSignupFormTemplate from "@/components/templates/login-signup-form-template";
+import SignupForm from "@/components/organisms/signup-form";
 
 export const metadata: Metadata = {
   title: "Signup | WMA",
   description: "",
 };
 
-export default function page() {
-  return <LoginSignupFormTemplate variant="signup" />;
+export default function SignupPage() {
+  return <SignupForm />;
 }

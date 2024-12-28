@@ -21,16 +21,58 @@ import FormContent from "../molecules/form-content";
 import FormTitle from "../molecules/form-title";
 import InputGroup from "../molecules/input-group";
 import FormWrapper from "../molecules/form-wrapper";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 
-export default function SignupForm({ variant }: { variant: "signup" }) {
+export default function SignupForm() {
+  const router = useRouter();
   const form = useForm<InferredSignupSchemaType>({
     resolver: zodResolver(signupSchema),
     defaultValues: SIGNUP_DEFAULT_VALUES,
     mode: "onBlur",
   });
 
-  function onSubmit(values: InferredSignupSchemaType) {
-    console.log({ values });
+  const signupMutation = useMutation({
+    mutationFn: async (values: InferredSignupSchemaType) => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/register`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              name: values.full_name,
+              email: values.email,
+              password: values.password,
+            }),
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error);
+        }
+
+        return data;
+      } catch (err) {
+        throw err;
+      }
+    },
+    onSuccess: (data: { message: string }) => {
+      toast({ title: data.message });
+      router.push("/");
+    },
+    onError: (err) => {
+      toast({ title: err.message, variant: "destructive" });
+    },
+  });
+
+  async function onSubmit(values: InferredSignupSchemaType) {
+    signupMutation.mutate(values);
   }
 
   return (
@@ -41,13 +83,13 @@ export default function SignupForm({ variant }: { variant: "signup" }) {
           <FormWrapper onSubmit={form.handleSubmit(onSubmit)}>
             <InputGroup>
               <FormField
-                name="username"
+                name="full_name"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username:</FormLabel>
+                    <FormLabel>Full Name:</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your username" {...field} />
+                      <Input placeholder="Enter your Full Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -101,13 +143,17 @@ export default function SignupForm({ variant }: { variant: "signup" }) {
                 )}
               />
             </InputGroup>
-            <Button type="submit" variant="secondary">
-              Sign Up
+            <Button
+              type="submit"
+              variant="secondary"
+              disabled={signupMutation.isPending}
+            >
+              {signupMutation.isPending ? "Signing up" : "Sign Up"}
             </Button>
           </FormWrapper>
         </Form>
       </FormContent>
-      <FormFooter variant={variant} />
+      <FormFooter variant="signup" />
     </>
   );
 }

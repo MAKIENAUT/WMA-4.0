@@ -1,5 +1,7 @@
+import { Toaster } from "@/components/atoms/ui/toaster";
 import "./globals.css";
 import { dm_sans } from "@/lib/fonts";
+import QueryProvider from "@/features/react-query/components/query-provider";
 
 export default function RootLayout({
   children,
@@ -11,7 +13,8 @@ export default function RootLayout({
       <body
         className={`${dm_sans.className} bg-background overflow-x-hidden antialiased`}
       >
-        {children}
+        <QueryProvider>{children}</QueryProvider>
+        <Toaster />
       </body>
     </html>
   );

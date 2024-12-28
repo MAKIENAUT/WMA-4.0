@@ -21,54 +21,19 @@ import FormContent from "../molecules/form-content";
 import FormTitle from "../molecules/form-title";
 import InputGroup from "../molecules/input-group";
 import FormWrapper from "../molecules/form-wrapper";
-import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useAuthLogin } from "@/hooks/use-auth-login";
 
 export default function LoginForm() {
   const router = useRouter();
+
   const form = useForm<InferredLoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: LOGIN_DEFAULT_VALUES,
     mode: "onBlur",
   });
 
-  const loginMutation = useMutation({
-    mutationFn: async (values: InferredLoginSchemaType) => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email: values.email,
-              password: values.password,
-            }),
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-            },
-          }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error);
-        }
-
-        return data;
-      } catch (err) {
-        throw err;
-      }
-    },
-    onSuccess: (data: { message: string }) => {
-      toast({ title: data.message });
-      router.push("/");
-    },
-    onError: (err) => {
-      toast({ title: err.message, variant: "destructive" });
-    },
-  });
+  const loginMutation = useAuthLogin(router);
 
   function onSubmit(values: InferredLoginSchemaType) {
     loginMutation.mutate(values);

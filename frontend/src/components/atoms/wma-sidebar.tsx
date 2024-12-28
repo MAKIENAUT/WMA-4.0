@@ -20,45 +20,32 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
-import { useAuthMe } from "@/hooks/use-auth-me";
-import { useRouter } from "next/navigation";
-import { toast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { UseMutationResult } from "@tanstack/react-query";
+import { DataProps } from "@/types/user-data";
 
 type WMASidebarProps = {
   items: { title: string; url: string }[];
+  data: DataProps;
+  isPending: boolean;
+  isError: boolean;
+  logoutMutation: UseMutationResult<
+    {
+      message: string;
+    },
+    Error,
+    void,
+    unknown
+  >;
 };
 
-export default function WMASidebar({ items }: WMASidebarProps) {
-  const router = useRouter();
+export default function WMASidebar({
+  items,
+  data,
+  isPending,
+  isError,
+  logoutMutation,
+}: WMASidebarProps) {
   const { toggleSidebar, isMobile } = useSidebar();
-  const { data, isLoading, isError } = useAuthMe();
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/logout`,
-          {
-            method: "POST",
-          }
-        );
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error);
-        }
-        return data;
-      } catch (error) {
-        throw error;
-      }
-    },
-    onSuccess: (data: { message: string }) => {
-      toast({ title: data.message });
-      router.push("/login");
-    },
-    onError: (err) => {
-      toast({ title: err.message, variant: "destructive" });
-    },
-  });
 
   if (isMobile) {
     return (
@@ -86,10 +73,10 @@ export default function WMASidebar({ items }: WMASidebarProps) {
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-          {isLoading && <div>loading...</div>}
-
           <SidebarMenu>
-            {isError || !data ? (
+            {isPending ? (
+              <div>loading...</div>
+            ) : isError || !data ? (
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild

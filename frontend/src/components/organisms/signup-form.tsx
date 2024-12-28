@@ -21,57 +21,21 @@ import FormContent from "../molecules/form-content";
 import FormTitle from "../molecules/form-title";
 import InputGroup from "../molecules/input-group";
 import FormWrapper from "../molecules/form-wrapper";
-import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useAuthRegister } from "@/hooks/use-auth-register";
 
 export default function SignupForm() {
   const router = useRouter();
+
   const form = useForm<InferredSignupSchemaType>({
     resolver: zodResolver(signupSchema),
     defaultValues: SIGNUP_DEFAULT_VALUES,
     mode: "onBlur",
   });
 
-  const signupMutation = useMutation({
-    mutationFn: async (values: InferredSignupSchemaType) => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/register`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              name: values.full_name,
-              email: values.email,
-              password: values.password,
-            }),
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-            },
-          }
-        );
+  const signupMutation = useAuthRegister(router);
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.error);
-        }
-
-        return data;
-      } catch (err) {
-        throw err;
-      }
-    },
-    onSuccess: (data: { message: string }) => {
-      toast({ title: data.message });
-      router.push("/");
-    },
-    onError: (err) => {
-      toast({ title: err.message, variant: "destructive" });
-    },
-  });
-
-  async function onSubmit(values: InferredSignupSchemaType) {
+  function onSubmit(values: InferredSignupSchemaType) {
     signupMutation.mutate(values);
   }
 

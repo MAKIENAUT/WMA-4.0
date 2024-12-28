@@ -13,7 +13,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response): void => {
+app.get("/api", (req: Request, res: Response): void => {
   try {
     res.status(200).json({ message: "API is working" });
   } catch (error) {

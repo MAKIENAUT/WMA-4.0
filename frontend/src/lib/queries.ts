@@ -4,10 +4,7 @@ export const userQueryOptions = queryOptions({
   queryKey: ["userAuthMe"],
   queryFn: async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/me`,
-      {
-        method: "GET",
-      }
+      `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/me`
     );
 
     if (!response.ok) {
@@ -17,5 +14,4 @@ export const userQueryOptions = queryOptions({
     return response.json();
   },
   retry: false,
-  enabled: typeof window !== "undefined",
 });

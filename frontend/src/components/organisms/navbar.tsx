@@ -4,6 +4,21 @@ import { SidebarTrigger } from "../atoms/ui/sidebar";
 import WMASidebar from "../atoms/wma-sidebar";
 import NavbarLinks from "../molecules/navbar-links";
 
+const menu_items = [
+  {
+    title: "Blogs",
+    url: "/blogs",
+  },
+  {
+    title: "About Us",
+    url: "/about-us",
+  },
+  {
+    title: "Services",
+    url: "/services",
+  },
+];
+
 export type NavbarProps = {
   data: {
     title: string;
@@ -11,7 +26,7 @@ export type NavbarProps = {
   }[];
 };
 
-export default function Navbar({ data }: NavbarProps) {
+export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 z-50 flex w-screen items-center justify-between bg-white p-2 sm:px-8 sm:py-4 lg:max-h-20 xl:px-20">
@@ -24,10 +39,10 @@ export default function Navbar({ data }: NavbarProps) {
             alt="WMA logo"
           />
         </Link>
-        <NavbarLinks data={data} />
+        <NavbarLinks items={menu_items} />
         <SidebarTrigger />
       </nav>
-      <WMASidebar data={data} />
+      <WMASidebar items={menu_items} />
     </>
   );
 }

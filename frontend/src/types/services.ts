@@ -9,4 +9,9 @@ export interface ServiceData {
   title: string;
   description: string;
   processSteps?: ProcessStep[];
+  category?: {
+    title: string;
+    description: string;
+    processSteps?: ProcessStep[];
+  }[];
 }

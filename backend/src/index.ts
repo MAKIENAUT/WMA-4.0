@@ -1,28 +1,19 @@
-import express, {
-  Request,
-  Response,
-  NextFunction,
-  RequestHandler,
-} from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { PrismaClient } from "@prisma/client";
-import authRoutes from "./routes/auth.routes";
-import { authenticateToken } from "./middleware/auth.middleware";
+import authRoutes from "./modules/auth/auth.routes";
+import { authenticateToken } from "./modules/auth/auth.middleware";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 
-const prisma = new PrismaClient();
+dotenv.config();
+
+export const prisma = new PrismaClient();
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 
-const corsMiddleware: RequestHandler = (req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-};
-
-app.use(corsMiddleware);
-
-app.get("/test", (req: Request, res: Response): void => {
+app.get("/", (req: Request, res: Response): void => {
   try {
     res.status(200).json({ message: "API is working" });
   } catch (error) {
@@ -30,10 +21,10 @@ app.get("/test", (req: Request, res: Response): void => {
   }
 });
 
-app.use("/auth", authRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 app.get(
-  "/users",
+  "/api/v1/users",
   authenticateToken,
   async (req: Request, res: Response): Promise<void> => {
     try {
@@ -48,7 +39,6 @@ app.get(
 );
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
   res.status(500).json({
     error: "Something went wrong",
     message: err.message,

@@ -1,4 +1,4 @@
-import ServiceOverviewTemplate from "@/components/templates/ServiceOverviewTemplate";
+import ServiceTemplate from "@/components/templates/service-template";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default function services() {
-  return <ServiceOverviewTemplate type="page" />;
+export default function ServicesPage() {
+  return <ServiceTemplate type="page" />;
 }

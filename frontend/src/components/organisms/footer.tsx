@@ -1,8 +1,98 @@
 import Image from "next/image";
-import FooterLogos from "../molecules/footer-logos";
-import FooterLink from "../molecules/footer-link";
-import FooterGroup from "../molecules/footer-group";
-import FooterLinkGroup from "../molecules/footer-link-group";
+import { ReactNode } from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "../atoms/ui/button";
+import Link from "next/link";
+import Facebook from "../../../public/facebook";
+import Instagram from "../../../public/instagram";
+
+function FooterGroup({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("flex flex-col gap-8 py-16 sm:flex-row", className)}>
+      {children}
+    </div>
+  );
+}
+
+function FooterLogos() {
+  const LOGOS = [
+    { alt: "WMC logo", src: "/wmc-logo.png", className: "" },
+    {
+      alt: "USCIS logo",
+      src: "/USCIS-logo.png",
+      className: "bg-white p-2 rounded",
+    },
+    {
+      alt: "DepEd logo",
+      src: "/us-deped-logo.svg",
+      className: "bg-white p-2 rounded",
+    },
+    { alt: "DOL logo", src: "/DOL-logo.svg", className: "" },
+  ];
+
+  return (
+    <div className="grid grid-cols-2 gap-4 px-4 sm:order-last sm:basis-full">
+      {LOGOS.map((logo) => (
+        <FooterLogoItem
+          key={logo.src}
+          alt={logo.alt}
+          src={logo.src}
+          className={logo.className}
+        />
+      ))}
+    </div>
+  );
+}
+
+type FooterLogoItemProps = {
+  alt: string;
+  src: string;
+  className: string;
+};
+
+function FooterLogoItem({ alt, src, className }: FooterLogoItemProps) {
+  return (
+    <div className="flex items-center justify-center">
+      <Image
+        alt={alt}
+        src={src}
+        width={1000}
+        height={1000}
+        className={cn("h-auto max-h-28 w-auto xl:max-w-64", className)}
+      />
+    </div>
+  );
+}
+
+function FooterLinkGroup({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return <div className={cn("flex flex-col gap-4", className)}>{children}</div>;
+}
+
+function FooterLink({
+  url,
+  content,
+}: {
+  url: string;
+  content: string | ReactNode;
+}) {
+  return (
+    <Button asChild variant="link-footer" size="none">
+      <Link href={url}>{content}</Link>
+    </Button>
+  );
+}
 
 export default function Footer() {
   return (
@@ -30,25 +120,35 @@ export default function Footer() {
 
       <FooterGroup className="py-8 sm:gap-16">
         <FooterLinkGroup>
-          <FooterLink url="/news" title="News" />
-          <FooterLink url="/services" title="Services" />
-          <FooterLink url="/about-us" title="About Us" />
-          <FooterLink url="#" title="Administrator" />
+          <FooterLink url="/news" content="News" />
+          <FooterLink url="/services" content="Services" />
+          <FooterLink url="/about-us" content="About Us" />
+          <FooterLink url="#" content="Administrator" />
         </FooterLinkGroup>
         <FooterLinkGroup>
-          <FooterLink url="/services/family-based" title="Family Based" />
+          <FooterLink url="/services/family-based" content="Family Based" />
           <FooterLink
             url="/services/study-and-exchange"
-            title="Study And Exchange"
+            content="Study And Exchange"
           />
           <FooterLink
             url="/services/temporary-employment"
-            title="Temporary Employment"
+            content="Temporary Employment"
           />
         </FooterLinkGroup>
-        <FooterLinkGroup>
-          <FooterLink url="#" title="Facebook" />
-          <FooterLink url="#" title="Instagram" />
+        <FooterLinkGroup className="flex-row gap-6">
+          <FooterLink
+            url="#"
+            content={
+              <Facebook className="hover:fill-wma-gold active:fill-wma-darkGold size-8 fill-white" />
+            }
+          />
+          <FooterLink
+            url="#"
+            content={
+              <Instagram className="hover:fill-wma-gold active:fill-wma-darkGold size-8 fill-white" />
+            }
+          />
         </FooterLinkGroup>
       </FooterGroup>
 

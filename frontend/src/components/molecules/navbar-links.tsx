@@ -8,23 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "../atoms/ui/dropdown-menu";
 import Link from "next/link";
-import { UseMutationResult } from "@tanstack/react-query";
-import { DataProps } from "@/types/user-data";
-
-type NavbarLinksProps = {
-  items: { title: string; url: string }[];
-  data: DataProps;
-  isPending: boolean;
-  isError: boolean;
-  logoutMutation: UseMutationResult<
-    {
-      message: string;
-    },
-    Error,
-    void,
-    unknown
-  >;
-};
+import { NavbarLinksProps } from "@/types/navbar-links";
 
 export default function NavbarLinks({
   items,

@@ -21,19 +21,16 @@ import FormContent from "../molecules/form-content";
 import FormTitle from "../molecules/form-title";
 import InputGroup from "../molecules/input-group";
 import FormWrapper from "../molecules/form-wrapper";
-import { useRouter } from "next/navigation";
-import { useAuthRegister } from "@/hooks/use-auth-register";
+import { useAuthContext } from "@/features/auth/components/auth-provider";
 
 export default function SignupForm() {
-  const router = useRouter();
+  const { signupMutation } = useAuthContext();
 
   const form = useForm<InferredSignupSchemaType>({
     resolver: zodResolver(signupSchema),
     defaultValues: SIGNUP_DEFAULT_VALUES,
     mode: "onBlur",
   });
-
-  const signupMutation = useAuthRegister(router);
 
   function onSubmit(values: InferredSignupSchemaType) {
     signupMutation.mutate(values);

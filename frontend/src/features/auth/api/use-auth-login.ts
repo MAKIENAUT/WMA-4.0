@@ -1,18 +1,17 @@
-import { InferredSignupSchemaType } from "@/types/signup-schema";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "./use-toast";
+import { toast } from "../../../hooks/use-toast";
+import { InferredLoginSchemaType } from "@/types/login-schema";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-export function useAuthRegister(router: AppRouterInstance) {
+export function useAuthLogin(router: AppRouterInstance) {
   return useMutation({
-    mutationFn: async (values: InferredSignupSchemaType) => {
+    mutationFn: async (values: InferredLoginSchemaType) => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/register`,
+          `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/login`,
           {
             method: "POST",
             body: JSON.stringify({
-              name: values.full_name,
               email: values.email,
               password: values.password,
             }),

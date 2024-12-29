@@ -4,9 +4,8 @@ import Image from "next/image";
 import { SidebarTrigger } from "../atoms/ui/sidebar";
 import WMASidebar from "../atoms/wma-sidebar";
 import NavbarLinks from "../molecules/navbar-links";
-import { useAuthMe } from "@/hooks/use-auth-me";
-import { useAuthLogout } from "@/lib/mutations";
-import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/features/auth/components/auth-provider";
+import { useAuthMe } from "@/features/auth/api/use-auth-me";
 
 const menu_items = [
   {
@@ -31,10 +30,8 @@ export type NavbarProps = {
 };
 
 export default function Navbar() {
-  const router = useRouter();
   const { data, isPending, isError } = useAuthMe();
-  console.log({ data });
-  const logoutMutation = useAuthLogout(router);
+  const { logoutMutation } = useAuthContext();
   return (
     <>
       <nav className="fixed top-0 z-50 flex w-screen items-center justify-between bg-white p-2 sm:px-8 sm:py-4 lg:max-h-20 xl:px-20">

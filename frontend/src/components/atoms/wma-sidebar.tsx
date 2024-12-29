@@ -20,23 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import Link from "next/link";
-import { UseMutationResult } from "@tanstack/react-query";
-import { DataProps } from "@/types/user-data";
-
-type WMASidebarProps = {
-  items: { title: string; url: string }[];
-  data: DataProps;
-  isPending: boolean;
-  isError: boolean;
-  logoutMutation: UseMutationResult<
-    {
-      message: string;
-    },
-    Error,
-    void,
-    unknown
-  >;
-};
+import { NavbarLinksProps } from "@/types/navbar-links";
 
 export default function WMASidebar({
   items,
@@ -44,7 +28,7 @@ export default function WMASidebar({
   isPending,
   isError,
   logoutMutation,
-}: WMASidebarProps) {
+}: NavbarLinksProps) {
   const { toggleSidebar, isMobile } = useSidebar();
 
   if (isMobile) {

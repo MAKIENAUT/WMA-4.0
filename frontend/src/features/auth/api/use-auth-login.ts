@@ -1,9 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../../../hooks/use-toast";
 import { InferredLoginSchemaType } from "@/types/login-schema";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export function useAuthLogin(router: AppRouterInstance) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (values: InferredLoginSchemaType) => {
       try {
@@ -33,6 +34,7 @@ export function useAuthLogin(router: AppRouterInstance) {
       }
     },
     onSuccess: (data: { message: string }) => {
+      queryClient.invalidateQueries({ queryKey: ["userAuthMe"] });
       toast({ title: data.message });
       router.push("/");
     },

@@ -1,8 +1,9 @@
 import { toast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export function useAuthLogout(router: AppRouterInstance) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async () => {
       try {
@@ -22,8 +23,9 @@ export function useAuthLogout(router: AppRouterInstance) {
       }
     },
     onSuccess: (data: { message: string }) => {
+      queryClient.invalidateQueries({ queryKey: ["userAuthMe"] });
       toast({ title: data.message });
-      router.push("/login");
+      router.refresh();
     },
     onError: (err) => {
       toast({ title: err.message, variant: "destructive" });

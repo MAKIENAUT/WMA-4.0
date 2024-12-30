@@ -5,7 +5,6 @@ import { SidebarTrigger } from "../atoms/ui/sidebar";
 import WMASidebar from "../atoms/wma-sidebar";
 import NavbarLinks from "../molecules/navbar-links";
 import { useAuthContext } from "@/features/auth/components/auth-provider";
-import { useAuthMe } from "@/features/auth/api/use-auth-me";
 
 const menu_items = [
   {
@@ -30,8 +29,7 @@ export type NavbarProps = {
 };
 
 export default function Navbar() {
-  const { data, isPending, isError } = useAuthMe();
-  const { logoutMutation } = useAuthContext();
+  const { data, isPending, isError, logoutMutation } = useAuthContext();
   return (
     <>
       <nav className="fixed top-0 z-50 flex w-screen items-center justify-between bg-white p-2 sm:px-8 sm:py-4 lg:max-h-20 xl:px-20">

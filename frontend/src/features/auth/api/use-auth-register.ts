@@ -1,9 +1,10 @@
 import { InferredSignupSchemaType } from "@/types/signup-schema";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "../../../hooks/use-toast";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export function useAuthRegister(router: AppRouterInstance) {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (values: InferredSignupSchemaType) => {
       try {
@@ -34,6 +35,7 @@ export function useAuthRegister(router: AppRouterInstance) {
       }
     },
     onSuccess: (data: { message: string }) => {
+      queryClient.invalidateQueries({ queryKey: ["userAuthMe"] });
       toast({ title: data.message });
       router.push("/");
     },

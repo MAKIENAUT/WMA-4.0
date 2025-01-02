@@ -1,7 +1,7 @@
-FROM node:18 AS base
+FROM node:20 AS base
+WORKDIR /app
 
 FROM base AS deps
-WORKDIR /app
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 RUN \
     if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -10,8 +10,11 @@ RUN \
     else echo "Lockfile not found." && exit 1; \
     fi
 
+FROM deps AS dev
+COPY . .
+CMD [ "npm", "run", "dev" ]
+
 FROM base AS builder
-WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . ./
 RUN \
@@ -23,7 +26,6 @@ RUN \
 
 
 FROM base AS runner
-WORKDIR /app
 ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 expressjs

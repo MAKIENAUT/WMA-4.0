@@ -11,6 +11,7 @@ services:
     depends_on:
       - frontend
       - backend
+    restart: always
 
   frontend:
     container_name: frontend
@@ -24,9 +25,11 @@ services:
       - backend
     develop:
       watch:
-        - action: rebuild
-          path: ./frontend/src
-          target: ./
+        - path: ./frontend/src
+          action: sync
+          target: ./app/src
+        - path: ./frontend/package.json
+          action: rebuild
 
   backend:
     container_name: backend
@@ -40,9 +43,11 @@ services:
       - db
     develop:
       watch:
-        - action: rebuild
-          path: ./backend/src
-          target: ./
+        - path: ./backend/src
+          action: sync
+          target: ./app/src
+        - path: ./backend/package.json
+          action: rebuild
 
   db:
     container_name: db

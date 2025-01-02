@@ -17,6 +17,9 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+FROM deps as dev
+COPY . .
+CMD [ "npm", "run", "dev" ]
 
 # Rebuild the source code only when needed
 FROM base AS builder

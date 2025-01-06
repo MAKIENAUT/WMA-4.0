@@ -1,4 +1,5 @@
 import Image from "next/image";
+import SectionWrapper from "./section-wrapper";
 
 function PromiseStatement() {
   return (
@@ -30,11 +31,11 @@ function PromiseImage() {
 
 export default function PromiseSection() {
   return (
-    <section className="relative mb-32 px-4 sm:px-8 lg:mb-96 xl:px-20">
+    <SectionWrapper className="relative">
       <div className="mx-auto max-w-[1280px] items-center sm:flex">
         <PromiseStatement />
         <PromiseImage />
       </div>
-    </section>
+    </SectionWrapper>
   );
 }

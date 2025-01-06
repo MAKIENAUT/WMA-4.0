@@ -126,9 +126,9 @@ function HeaderImage({
       <Image
         src={imageSrc}
         alt={alt}
-        width={2000}
-        height={2000}
+        fill
         className={cn("size-full object-cover object-center", imageClassName)}
+        sizes="(max-width: 1280) 33vw, 50vw"
       />
     </div>
   );

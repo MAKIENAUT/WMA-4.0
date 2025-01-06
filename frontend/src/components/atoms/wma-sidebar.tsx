@@ -21,6 +21,7 @@ import {
 } from "./ui/dropdown-menu";
 import Link from "next/link";
 import { NavbarLinksProps } from "@/types/navbar-links";
+import { Skeleton } from "./ui/skeleton";
 
 export default function WMASidebar({
   items,
@@ -59,7 +60,7 @@ export default function WMASidebar({
         <SidebarFooter>
           <SidebarMenu>
             {isPending ? (
-              <div>loading...</div>
+              <Skeleton className="h-4 w-20" />
             ) : isError || !data ? (
               <SidebarMenuItem>
                 <SidebarMenuButton

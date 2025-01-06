@@ -9,6 +9,7 @@ import {
 } from "../atoms/ui/dropdown-menu";
 import Link from "next/link";
 import { NavbarLinksProps } from "@/types/navbar-links";
+import { Skeleton } from "../atoms/ui/skeleton";
 
 export default function NavbarLinks({
   items,
@@ -27,7 +28,9 @@ export default function NavbarLinks({
         </li>
       ))}
       {isPending ? (
-        <div>loading...</div>
+        <li className="flex items-center justify-center">
+          <Skeleton className="h-4 w-20" />
+        </li>
       ) : isError || !data ? (
         <li>
           <Button variant="link" asChild>

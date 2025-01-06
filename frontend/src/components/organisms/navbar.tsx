@@ -5,6 +5,7 @@ import { SidebarTrigger } from "../atoms/ui/sidebar";
 import WMASidebar from "../atoms/wma-sidebar";
 import NavbarLinks from "../molecules/navbar-links";
 import { useAuthContext } from "@/features/auth/components/auth-provider";
+import { Button } from "../atoms/ui/button";
 
 const menu_items = [
   {
@@ -33,15 +34,17 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 z-50 flex w-screen items-center justify-between bg-white p-2 sm:px-8 sm:py-4 lg:max-h-20 xl:px-20">
-        <Link href="/">
-          <Image
-            src="/wma-logo.png"
-            width={1000}
-            height={1000}
-            className="max-h-10 w-auto md:max-h-12"
-            alt="WMA logo"
-          />
-        </Link>
+        <Button asChild variant="logo">
+          <Link href="/">
+            <Image
+              src="/wma-logo.png"
+              width={1000}
+              height={1000}
+              className="max-h-10 w-auto md:max-h-12"
+              alt="WMA logo"
+            />
+          </Link>
+        </Button>
         <NavbarLinks
           items={menu_items}
           data={data}

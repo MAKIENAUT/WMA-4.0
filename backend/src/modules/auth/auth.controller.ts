@@ -1,10 +1,12 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../../common/utils/jwt.utils";
 import { prisma } from "../..";
 import { createAuthCookie } from "../../common/utils/cookie.utils";
+import { User } from "@prisma/client";
+import { AuthRequest } from "./auth.middleware";
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: AuthRequest, res: Response) => {
   try {
     const { name, email, password } = req.body;
 
@@ -38,14 +40,17 @@ export const register = async (req: Request, res: Response) => {
         id: newUser.id,
         name: newUser.name,
         email: newUser.email,
+        createdAt: newUser.createdAt,
+        updatedAt: newUser.updatedAt,
       },
     });
   } catch (error) {
+    console.error("Registration error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: AuthRequest, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -69,29 +74,39 @@ export const login = async (req: Request, res: Response) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
     });
   } catch (error) {
+    console.error("Login error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-export const logout = async (req: Request, res: Response) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-  });
+export const logout = async (req: AuthRequest, res: Response) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
-  res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 };
 
-export const getAuthenticatedUser = async (req: Request, res: Response) => {
+export const getAuthenticatedUser = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = (req as any).user.userId;
+    if (!req.user?.userId) {
+      return res.status(401).json({ error: "User not authenticated" });
+    }
 
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: req.user.userId },
       select: {
         id: true,
         name: true,
@@ -107,6 +122,7 @@ export const getAuthenticatedUser = async (req: Request, res: Response) => {
 
     res.status(200).json({ user });
   } catch (error) {
+    console.error("Error in getAuthenticatedUser:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

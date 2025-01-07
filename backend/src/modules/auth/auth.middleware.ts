@@ -1,8 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../../common/utils/jwt.utils";
 
+export interface AuthRequest extends Request {
+  user?: {
+    userId: number;
+    email: string;
+  };
+}
+
 export const authenticateToken = (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ): void => {
@@ -20,9 +27,10 @@ export const authenticateToken = (
 
   try {
     const decoded = verifyToken(token);
-    (req as any).user = decoded;
+    req.user = decoded;
     next();
   } catch (error) {
+    console.error("Authentication error:", error);
     res.status(403).json({ error: "Invalid or expired token" });
   }
 };

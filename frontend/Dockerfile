@@ -17,7 +17,7 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-FROM deps as dev
+FROM deps AS dev
 COPY . .
 CMD [ "npm", "run", "dev" ]
 

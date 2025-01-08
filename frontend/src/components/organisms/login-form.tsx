@@ -24,12 +24,13 @@ import FormWrapper from "../molecules/form-wrapper";
 import { useAuthContext } from "@/features/auth/components/auth-provider";
 
 export default function LoginForm() {
-  const { loginMutation } = useAuthContext();
+  const { disabled, loginMutation } = useAuthContext();
 
   const form = useForm<InferredLoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: LOGIN_DEFAULT_VALUES,
     mode: "onBlur",
+    disabled,
   });
 
   function onSubmit(values: InferredLoginSchemaType) {

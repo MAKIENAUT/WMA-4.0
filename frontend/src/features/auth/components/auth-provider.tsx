@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { useAuthMe } from "../api/use-auth-me";
 import { useAuthLogout } from "@/features/auth/api/use-auth-logout";
 import { DataProps } from "../types/user-data";
@@ -11,6 +11,7 @@ import { useAuthRegister } from "@/features/auth/api/use-auth-register";
 import { SignupMutationProps } from "../types/signup-mutation";
 
 type AuthContextProps = {
+  disabled: boolean;
   data: DataProps;
   isPending: boolean;
   isError: boolean;
@@ -30,12 +31,14 @@ export function useAuthContext() {
 }
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
+  const [disabled, setDisabled] = useState(false);
   const router = useRouter();
   const { data, isPending, isError } = useAuthMe();
-  const loginMutation = useAuthLogin(router);
-  const signupMutation = useAuthRegister(router);
+  const loginMutation = useAuthLogin(router, setDisabled);
+  const signupMutation = useAuthRegister(router, setDisabled);
   const logoutMutation = useAuthLogout(router);
   const contextValue = {
+    disabled,
     data,
     isPending,
     isError,

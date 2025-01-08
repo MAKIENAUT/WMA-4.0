@@ -33,11 +33,7 @@ function CTAButton({
   children: ReactNode;
   onClick?: () => void;
 }) {
-  return (
-    <Button variant="service" onClick={onClick}>
-      {children}
-    </Button>
-  );
+  return <Button onClick={onClick}>{children}</Button>;
 }
 export default function CallToAction({ children }: { children: ReactNode }) {
   return (

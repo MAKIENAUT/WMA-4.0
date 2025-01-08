@@ -156,7 +156,7 @@ export default function HeroTemplate({
   return (
     <header
       className={cn(
-        "from-wma-darkTeal to-wma-teal sm:bg-wma-darkTeal relative flex min-h-[200px] items-center overflow-hidden bg-gradient-to-r",
+        "from-wma-darkTeal to-wma-teal sm:to-wma-darkTeal relative flex min-h-[200px] items-center overflow-hidden bg-gradient-to-r",
         "mb-8 sm:mb-10 md:mb-12 lg:mb-16",
         className
       )}

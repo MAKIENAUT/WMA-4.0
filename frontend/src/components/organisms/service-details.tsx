@@ -50,74 +50,82 @@ export default function ServiceProcess({
   serviceData,
   serviceName,
 }: ServiceProcessProps) {
-  if (serviceName === "temporary-employment") {
-    return (
-      <ServiceProcessWrapper>
-        <ServiceProcessContent>
-          <SectionTitle prefix="Process of:" title={serviceData.title} />
-          <Carousel className="p-0 max-[420px]:w-[300px] md:p-0 lg:p-0">
-            <ServiceCarouselDots data={serviceData.category!} />
-            <CarouselContent>
-              {serviceData.category!.map((service, index) => (
-                <CarouselItem key={index} className="flex flex-col">
-                  <p className="lg:text-lg" key={index}>
-                    {service.description}
-                  </p>
-                  {service.processSteps?.map((process, i) => (
-                    <ProcessSteps
-                      key={i}
-                      stepNumber={
-                        typeof process.step === "string"
-                          ? parseInt(process.step, 10)
-                          : process.step
-                      }
-                      title={process.title}
-                      description={process.description}
-                    />
-                  ))}
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-          <CallToAction
-            title="Ready to Get Started?"
-            description={`Take the first step towards ${serviceData.title.toLowerCase()} by applying now.`}
-            buttonText="Apply Now"
-          />
-        </ServiceProcessContent>
-      </ServiceProcessWrapper>
-    );
-  } else {
-    return (
-      <ServiceProcessWrapper>
-        <ServiceProcessContent>
-          <SectionTitle prefix="Process of:" title={serviceData.title} />
+  return (
+    <ServiceProcessWrapper>
+      <ServiceProcessContent>
+        {serviceName === "temporary-employment" ? (
+          <>
+            <SectionTitle prefix="Process of:" title={serviceData.title} />
+            <Carousel className="p-0 max-[420px]:w-[300px] md:p-0 lg:p-0">
+              <ServiceCarouselDots data={serviceData.category!} />
+              <CarouselContent>
+                {serviceData.category!.map((service, index) => (
+                  <CarouselItem key={index} className="flex flex-col">
+                    <p className="lg:text-lg" key={index}>
+                      {service.description}
+                    </p>
+                    {service.processSteps?.map((process, i) => (
+                      <ProcessSteps
+                        key={i}
+                        stepNumber={
+                          typeof process.step === "string"
+                            ? parseInt(process.step, 10)
+                            : process.step
+                        }
+                        title={process.title}
+                        description={process.description}
+                      />
+                    ))}
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </>
+        ) : (
+          <>
+            <SectionTitle prefix="Process of:" title={serviceData.title} />
+            <p className="lg:text-lg">{serviceData.description}</p>
+            {serviceData.processSteps && (
+              <div className="flex flex-col gap-6 lg:gap-10">
+                {serviceData.processSteps.map((step, index) => (
+                  <ProcessSteps
+                    key={index}
+                    stepNumber={
+                      typeof step.step === "string"
+                        ? parseInt(step.step, 10)
+                        : step.step
+                    }
+                    title={step.title}
+                    description={step.description}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+        <CallToAction>
+          <CallToAction.Content>
+            <CallToAction.Header>
+              <CallToAction.Title>Got any questions?</CallToAction.Title>
+              <CallToAction.Description>
+                Feel free to reach out to us on FB messenger.
+              </CallToAction.Description>
+            </CallToAction.Header>
+            <CallToAction.CTAButton>Send questions</CallToAction.CTAButton>
+          </CallToAction.Content>
 
-          <p className="lg:text-lg">{serviceData.description}</p>
-
-          {serviceData.processSteps && (
-            <div className="flex flex-col gap-6 lg:gap-10">
-              {serviceData.processSteps.map((step, index) => (
-                <ProcessSteps
-                  key={index}
-                  stepNumber={
-                    typeof step.step === "string"
-                      ? parseInt(step.step, 10)
-                      : step.step
-                  }
-                  title={step.title}
-                  description={step.description}
-                />
-              ))}
-            </div>
-          )}
-          <CallToAction
-            title="Ready to Get Started?"
-            description={`Take the first step towards ${serviceData.title.toLowerCase()} by applying now.`}
-            buttonText="Apply Now"
-          />
-        </ServiceProcessContent>
-      </ServiceProcessWrapper>
-    );
-  }
+          <CallToAction.Content>
+            <CallToAction.Header>
+              <CallToAction.Title>Ready to Get Started?</CallToAction.Title>
+              <CallToAction.Description>
+                Take the first step towards {serviceData.title.toLowerCase()} by
+                applying now.
+              </CallToAction.Description>
+            </CallToAction.Header>
+            <CallToAction.CTAButton>Apply Now</CallToAction.CTAButton>
+          </CallToAction.Content>
+        </CallToAction>
+      </ServiceProcessContent>
+    </ServiceProcessWrapper>
+  );
 }

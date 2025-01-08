@@ -12,10 +12,12 @@ export default async function EasyApplySection() {
     <SectionWrapper>
       <ContentWrapper className="bg-wma-gold gap-6 rounded-xl">
         <div className="text-wma-footer inline-flex flex-col gap-2 text-center">
-          <h1 className={`${orelega_one.className} text-4xl`}>
+          <h1
+            className={`${orelega_one.className} text-4xl md:text-5xl xl:text-6xl`}
+          >
             Want to easily apply?
           </h1>
-          <p className="font-medium">
+          <p className="font-medium md:text-lg">
             Just send your resume, and we&apos;ll point you to the right
             direction.
           </p>

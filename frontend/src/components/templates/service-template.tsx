@@ -136,6 +136,11 @@ function ServiceCard({
           <Button variant="default" className={`self-start`} asChild>
             <Link href={route}>{buttonLabel}</Link>
           </Button>
+          {title !== "Web Development" && (
+            <Button variant="default" className={`self-start`} asChild>
+              <Link href="#">Apply Now</Link>
+            </Button>
+          )}
         </div>
       </div>
     </div>
@@ -151,7 +156,7 @@ export default function ServiceTemplate({ type }: ServiceSectionProps) {
     <section
       className={
         type === "section"
-          ? "mb-32 px-4 sm:px-8 xl:px-20"
+          ? "mb-32 px-4 sm:mb-16 sm:px-8 xl:px-20"
           : "px-4 pt-10 sm:px-8 md:pt-12 xl:px-20"
       }
     >

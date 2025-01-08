@@ -31,8 +31,8 @@ function PromiseImage() {
 
 export default function PromiseSection() {
   return (
-    <SectionWrapper className="relative">
-      <div className="mx-auto max-w-[1280px] items-center sm:flex">
+    <SectionWrapper className="relative sm:mb-16 md:mb-20 lg:mb-28">
+      <div className="relative mx-auto max-w-[1280px] items-center sm:flex">
         <PromiseStatement />
         <PromiseImage />
       </div>

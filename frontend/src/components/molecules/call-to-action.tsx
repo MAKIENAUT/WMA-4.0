@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { Button } from "@/components/atoms/ui/button";
+import Link from "next/link";
 
 function Content({ children }: { children: ReactNode }) {
   return (
@@ -26,14 +27,12 @@ function Description({ children }: { children: ReactNode }) {
   return <p className="lg:text-lg">{children}</p>;
 }
 
-function CTAButton({
-  children,
-  onClick,
-}: {
-  children: ReactNode;
-  onClick?: () => void;
-}) {
-  return <Button onClick={onClick}>{children}</Button>;
+function CTAButton({ children, link }: { children: ReactNode; link: string }) {
+  return (
+    <Button asChild>
+      <Link href={link}>{children}</Link>
+    </Button>
+  );
 }
 export default function CallToAction({ children }: { children: ReactNode }) {
   return (

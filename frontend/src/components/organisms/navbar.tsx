@@ -34,7 +34,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-0 z-50 flex w-screen items-center justify-between bg-white p-2 sm:px-8 sm:py-4 lg:max-h-20 xl:px-20">
-        <Button asChild variant="logo">
+        <Button asChild className="p-0" variant="logo">
           <Link href="/">
             <Image
               src="/wma-logo.png"

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import type { ServiceData } from "@/types/services";
 import SectionTitle from "@/components/atoms/section-title";
 import ProcessSteps from "@/components/molecules/process-steps";
@@ -9,7 +9,8 @@ import {
   CarouselItem,
   ServiceCarouselDots,
 } from "./carousel";
-import { cn } from "@/lib/utils";
+import ServiceWrapper from "./service-wrapper";
+import ServiceContent from "./service-content";
 
 interface ServiceProcessProps {
   serviceData: ServiceData;
@@ -23,36 +24,13 @@ interface ProcessSteps {
   description: string;
 }
 
-function ServiceProcessWrapper({ children }: { children: ReactNode }) {
-  return <section className="px-4 sm:px-8 xl:px-20">{children}</section>;
-}
-
-function ServiceProcessContent({
-  children,
-  className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "mx-auto flex max-w-[1280px] flex-col gap-6 rounded-t-xl bg-white px-4 py-8 pb-32 sm:px-8 md:pb-40 lg:px-14 lg:py-10 lg:pb-44 xl:px-16 xl:py-12 xl:pb-60",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-}
-
 export default function ServiceProcess({
   serviceData,
   serviceName,
 }: ServiceProcessProps) {
   return (
-    <ServiceProcessWrapper>
-      <ServiceProcessContent>
+    <ServiceWrapper>
+      <ServiceContent>
         {serviceName === "temporary-employment" ? (
           <>
             <SectionTitle prefix="Process of:" title={serviceData.title} />
@@ -111,7 +89,9 @@ export default function ServiceProcess({
                 Feel free to reach out to us on FB messenger.
               </CallToAction.Description>
             </CallToAction.Header>
-            <CallToAction.CTAButton>Send questions</CallToAction.CTAButton>
+            <CallToAction.CTAButton link="#">
+              Send questions
+            </CallToAction.CTAButton>
           </CallToAction.Content>
 
           <CallToAction.Content>
@@ -122,10 +102,12 @@ export default function ServiceProcess({
                 applying now.
               </CallToAction.Description>
             </CallToAction.Header>
-            <CallToAction.CTAButton>Apply Now</CallToAction.CTAButton>
+            <CallToAction.CTAButton link={`${serviceName}/form`}>
+              Apply Now
+            </CallToAction.CTAButton>
           </CallToAction.Content>
         </CallToAction>
-      </ServiceProcessContent>
-    </ServiceProcessWrapper>
+      </ServiceContent>
+    </ServiceWrapper>
   );
 }

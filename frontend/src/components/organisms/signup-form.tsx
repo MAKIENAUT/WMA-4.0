@@ -40,7 +40,7 @@ export default function SignupForm() {
   return (
     <>
       <FormContent>
-        <FormTitle title="Create an account" />
+        <FormTitle>Create an account</FormTitle>
         <Form {...form}>
           <FormWrapper onSubmit={form.handleSubmit(onSubmit)}>
             <InputGroup>

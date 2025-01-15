@@ -3,7 +3,7 @@ import HeroTemplate, { hero_items } from "@/components/templates/hero-template";
 import { notFound } from "next/navigation";
 import IndividualServiceTemplate from "@/components/templates/individual-service-template";
 
-const individual_services = {
+export const individual_services = {
   "study-and-exchange": {
     id: "study-and-exchange",
     title: "Study and Exchange Visas (J1)",

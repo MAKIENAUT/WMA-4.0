@@ -139,7 +139,7 @@ function ServiceCard({
             </Button>
             {title !== "Web Development" && (
               <Button variant="default" className={`self-start`} asChild>
-                <Link href="#">Apply Now</Link>
+                <Link href={`${route}/form`}>Apply Now</Link>
               </Button>
             )}
           </div>

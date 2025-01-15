@@ -40,7 +40,7 @@ export default function LoginForm() {
   return (
     <>
       <FormContent>
-        <FormTitle title="Login" />
+        <FormTitle>Login</FormTitle>
         <Form {...form}>
           <FormWrapper onSubmit={form.handleSubmit(onSubmit)}>
             <InputGroup>

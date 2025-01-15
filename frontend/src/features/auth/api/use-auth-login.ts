@@ -6,7 +6,8 @@ import { Dispatch, SetStateAction } from "react";
 
 export function useAuthLogin(
   router: AppRouterInstance,
-  setDisabled: Dispatch<SetStateAction<boolean>>
+  setDisabled: Dispatch<SetStateAction<boolean>>,
+  callbackURL: string
 ) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -42,7 +43,7 @@ export function useAuthLogin(
       setDisabled(false);
       queryClient.invalidateQueries({ queryKey: ["userAuthMe"] });
       toast({ title: data.message });
-      router.push("/");
+      router.push(callbackURL);
     },
     onError: (err) => {
       setDisabled(false);

@@ -9,6 +9,9 @@
     "dev": "nodemon src/index.ts",
     "prepare": "husky"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

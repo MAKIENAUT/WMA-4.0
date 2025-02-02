@@ -1,4 +1,4 @@
-name: wma-4
+name: wma-4-dev
 
 services:
   nginx:
@@ -17,39 +17,29 @@ services:
     container_name: frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-      target: dev
+      dockerfile: Dockerfile.dev
     ports:
       - 3000:3000
     restart: always
     depends_on:
       - backend
-    develop:
-      watch:
-        - path: ./frontend/src
-          action: sync
-          target: ./app/src
-        - path: ./frontend/package.json
-          action: rebuild
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
   backend:
     container_name: backend
     build:
       context: ./backend
-      dockerfile: Dockerfile
-      target: dev
+      dockerfile: Dockerfile.dev
     ports:
       - 3001:3001
     env_file: ./backend/.env
     depends_on:
       - db
-    develop:
-      watch:
-        - path: ./backend/src
-          action: sync
-          target: ./app/src
-        - path: ./backend/package.json
-          action: rebuild
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
 
   db:
     container_name: db
